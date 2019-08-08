@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- Constructor based dependency Injection -->
+	<bean id="movieFinderCons"
+		class="com.springstarter.constructor.MovieFinder" />
+	<bean id="simpleMovieListerCons"
+		class="com.springstarter.constructor.SimpleMovieLister">
+		<constructor-arg ref="movieFinderCons">
+		</constructor-arg>
+	</bean>
+
+	<!-- setter based dependency Injection -->
+	<bean id="movieFinderSetter"
+		class="com.springstarter.setter.MovieFinderSetter" />
+
+	<bean id="simpleMovieListerSetterCons"
+		class="com.springstarter.setter.SimpleMovieListerSetter">
+		<property name="movieFinderSetter" ref="movieFinderSetter"></property>
+	</bean>
+
+	<!-- Constructor argument type matching -->
+	<bean id="exampleBean"
+		class="com.springstarter.constructor.ExampleBean">
+		<constructor-arg type="int" value="7500000" />
+		<constructor-arg type="java.lang.String" value="42" />
+	</bean>
+
+	<!-- Constructor argument index -->
+	<bean id="exampleBean"
+		class="com.springstarter.constructor.ExampleBean">
+		<constructor-arg index="0" value="7500000" />
+		<constructor-arg index="1" value="42" />
+	</bean>
+
+	<!-- Constructor argument name -->
+	<bean id="exampleBean" class="com.springstarter.constructor.ExampleBean">
+		<constructor-arg name="years" value="7500000" />
+		<constructor-arg name="ultimateanswer" value="42" />
+	</bean>
+</beans>

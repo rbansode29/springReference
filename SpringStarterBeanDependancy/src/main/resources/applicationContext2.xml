@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- p- namespace example -->
+	<bean id="myDataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+		p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/mydb" p:username="root"
+		p:password="masterkaoli" />
+
+	<!-- The idref element The idref element is simply an error-proof way to 
+		pass the id (string value - not a reference) of another bean in the container 
+		to a <constructor-arg/> or <property/> element -->
+
+	<bean id="theTargetBean" class="..." />
+
+	<bean id="theClientBean" class="...">
+		<property name="targetName">
+			<idref bean="theTargetBean" />
+		</property>
+
+		<property name="targetName">
+			<!-- a bean with id 'theTargetBean' must exist; otherwise an exception 
+				will be thrown -->
+			<idref local="theTargetBean" />
+		</property>
+	</bean>
+
+
+	<!-- Inner beans A <bean/> element inside the <property/> or <constructor-arg/> 
+		elements defines a socalled inner bean. -->
+
+	<bean id="outer" class="...">
+		<!-- instead of using a reference to a target bean, simply define the target 
+			bean inline -->
+		<property name="target">
+			<bean class="com.example.Person"> <!-- this is the inner bean -->
+				<property name="name" value="Fiona Apple" />
+				<property name="age" value="25" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Null and empty string values -->
+	<bean class="ExampleBean">
+		<property name="email" value="" />
+	</bean>
+	<!-- The preceding example is equivalent to the following Java code: exampleBean.setEmail(""). -->
+
+	<bean class="ExampleBean">
+		<property name="email">
+			<null />
+		</property>
+	</bean>
+	<!-- The above configuration is equivalent to the following Java code: exampleBean.setEmail(null). -->
+
+	<!-- Using depends-on -->
+	<bean id="beanOne" class="ExampleBean"
+		depends-on="manager,accountDao">
+		<property name="manager" ref="manager" />
+	</bean>
+	<bean id="manager" class="ManagerBean" />
+	<bean id="accountDao" class="x.y.jdbc.JdbcAccountDao" />
+
+	<!-- Lazy-initialized beans -->
+	<bean id="lazy" class="com.foo.ExpensiveToCreateBean"
+		lazy-init="true" />
+	<bean name="not.lazy" class="com.foo.AnotherBean" />
+	<!-- set lazy-init at beans level -->
+	<!-- <beans default-lazy-init="true">
+		no beans will be pre-instantiated...
+	</beans> -->
+</beans>
