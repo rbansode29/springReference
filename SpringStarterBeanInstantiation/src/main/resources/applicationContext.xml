@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="exampleBean" class="com.springstarter.model.ExampleBean" />
+	<bean name="anotherExample"
+		class="com.springstarter.model.ExampleBeanTwo" />
+
+	<!-- Instantiation with a static factory method -->
+	<bean id="clientService"
+		class="com.springstarter.services.ClientService"
+		factory-method="createInstance" />
+
+	<!-- Instantiation with a instance factory method -->
+	<bean id="serviceLocator"
+		class="com.springstarter.services.DefaultServiceLocator" />
+
+	<bean id="clientServiceImpl" factory-bean="serviceLocator"
+		factory-method="createClientServiceImpInstance" />
+
+	<bean id="accountServiceImpl" factory-bean="serviceLocator"
+		factory-method="createAccountServiceImpInstance" />
+</beans>
