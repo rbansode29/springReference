@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<!--default bean scope is singleton -->
+	<bean id="defaultAccountService"
+		class=" com.springstarter.services.DefaultAccountService"></bean>
+	
+	<!-- explicitly specifing the bean scope as singleton -->
+	<bean id="defaultAccountService1"
+		class=" com.springstarter.services.DefaultAccountService"
+		scope="singleton"></bean>
+	
+	
+	<!-- explicitly specifing the bean scope as prototype-->
+	<bean id="customAccountService"
+		class=" com.springstarter.services.CustomAccountService" scope="prototype"></bean>	
+</beans>
