@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan
+		base-package="com.springstarter">
+	</context:component-scan>
+	<!-- You can disable the registration of AutowiredAnnotationBeanPostProcessor 
+		and CommonAnnotationBeanPostProcessor by including the annotation-config 
+		attribute with a value of false. -->
+
+	<!-- You can also disable the default filters by providing use-default-filters="false" 
+		as an attribute of the <component-scan/> element. This will in effect disable 
+		automatic detection of classes annotated with @Component, @Repository, @Service, 
+		or @Controller -->
+
+	<!-- <context:component-scan base-package="com.springstarter" name-generator="com.springstarter.namegenerator.MyBeanNameGenerator"> 
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype." 
+		/> <context:include-filter type="assignable" expression="com.springstarter.*" 
+		/> <context:include-filter type="aspectj" expression="com.springstarter.*" 
+		/> <context:include-filter type="regex" expression="com.springstarter.*" 
+		/> <context:include-filter type="custom" expression="com.springstarter.*" 
+		/> </context:component-scan> -->
+</beans>
