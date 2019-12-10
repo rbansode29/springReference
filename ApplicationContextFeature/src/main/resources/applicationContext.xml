@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>format</value>
+				<value>exceptions</value>
+				<value>windows</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="messageSource1"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>exceptions_en_GB</value>
+				<value>exceptions</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- lets inject the above MessageSource into this POJO -->
+	<bean id="messageSourceInjection"
+		class="com.spring.appcontextfeature.messagesource.MessageSourceInjection">
+		<property name="messageSource" ref="messageSourceRelodable" />
+	</bean>
+
+	<bean id="customMessageSource"
+		class="com.spring.appcontextfeature.messagesource.CustomMessageSource"></bean>
+
+
+	<bean id="messageSourceRelodable"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>exceptions_en_GB</value>
+				<value>exceptions</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+
+</beans>
