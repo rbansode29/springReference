@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd">
+
+
+	<bean id="person" class="com.spring.model.Person" />
+	<bean id="customer" class="com.spring.model.Customer" />
+	<bean id="address" class="com.spring.model.Address" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+				<value>messages_EN</value>
+				<value>messages_KR</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="personValidator"
+		class="com.spring.validator.PersonValidator">
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="addressValidator"
+		class="com.spring.validator.AddressValidator">
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="customerValidator"
+		class="com.spring.validator.CustomerValidator">
+		<constructor-arg name="addressValidator"
+			ref="addressValidator" />
+		<property name="messageSource" ref="messageSource"></property>
+	</bean>
+
+</beans>
