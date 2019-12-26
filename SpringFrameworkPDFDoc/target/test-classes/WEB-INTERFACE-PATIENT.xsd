@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="gov/cms/pqrs/patient/v1" targetNamespace="gov/cms/pqrs/patient/v1" elementFormDefault="qualified">
+	<xs:simpleType name="string-10-char">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="medicare-id">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
+			<xs:pattern value="[^\s]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-30-char">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tin">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="9"/>
+			<xs:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-25char-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="25"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="string-20char-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="20"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="num-10-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="\d{1,10}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="string-140char-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="140"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="med-rec-fnd-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[2]|[3]|[9]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="not-qualif-rea-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="10"/>
+					<xs:pattern value="11"/>
+					<xs:pattern value="12"/>
+					<xs:pattern value="16"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="care-confirmed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="prev5-not-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="17"/>
+					<xs:pattern value="18"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="prev-den-not-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="17"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="prev-other-not-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="denominator-exclusion-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="17"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="exam-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[1]|[2]|[4]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="confirmed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="8"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+					<xs:pattern value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="denominator-confirmed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="8"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="17"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="dm-confirmed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="8"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="presc-reason-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[1]|[2]|[4]|[5]|[6]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="test-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="17"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="yes-no-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[1]|[2]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="decimal-25-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="5"/>
+					<xs:fractionDigits value="2" fixed="true"/>
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="25"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="str-num-350-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="350"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="str-num-200-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="200"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="str-num-500-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="500"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="screen-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="14"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="prev-screen-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="4"/>
+					<xs:pattern value="14"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="performed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[1]|[2]|[4]|[5]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="followpup-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="[1]|[2]|[5]"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="string-9char-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="9"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="num-10-27-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="2"/>
+					<xs:minInclusive value="10"/>
+					<xs:maxInclusive value="27"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="num-0-4-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="1"/>
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="mh-denom-confirmed-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="8"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="17"/>
+					<xs:pattern value="19"/>
+					<xs:pattern value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="string-15char-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="15"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="ascvd-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+					<xs:pattern value="23"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="pc13-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+					<xs:pattern value="19"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="ldlc-qualif-or-empty">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="3"/>
+					<xs:pattern value="1"/>
+					<xs:pattern value="2"/>
+					<xs:pattern value="15"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:element name="web-interface-submission" type="tns:web-interface-submission"/>
+	<xs:complexType name="web-interface-submission">
+		<xs:sequence>
+			<xs:element name="group-tin" type="tns:tin"/>
+			<xs:element name="patient" type="tns:patient" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="patient">
+		<xs:sequence>
+			<xs:element name="medicare-id" type="tns:medicare-id"/>
+			<xs:element name="patient-first-name" type="xs:string" minOccurs="0"/>
+			<xs:element name="patient-last-name" type="xs:string" minOccurs="0"/>
+			<xs:element name="gender" type="xs:string" minOccurs="0"/>
+			<xs:element name="birth-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="medical-record-number" type="tns:string-25char-or-empty" minOccurs="0"/>
+			<xs:element name="other-id" type="tns:string-20char-or-empty" minOccurs="0"/>
+			<xs:element name="provider-npi" type="tns:num-10-or-empty" minOccurs="0"/>
+			<xs:element name="provider-npi-two" type="tns:num-10-or-empty" minOccurs="0"/>
+			<xs:element name="provider-npi-three" type="tns:num-10-or-empty" minOccurs="0"/>
+			<xs:element name="clinic-identifier" type="tns:string-9char-or-empty" minOccurs="0"/>
+			<xs:element name="general-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="medical-record-found" type="tns:med-rec-fnd-or-empty" minOccurs="0"/>
+			<xs:element name="medical-not-qualified-reason" type="tns:not-qualif-rea-or-empty" minOccurs="0"/>
+			<xs:element name="medical-not-qualified-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="carefalls-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="carefalls-confirmed" type="tns:care-confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="carefalls-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="falls-screening" type="tns:exam-or-empty" minOccurs="0"/>
+			<xs:element name="carefalls-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="cad-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="cad-confirmed" type="tns:confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="cad-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="cad-diabetes-lvsd" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="cad-acearb" type="tns:presc-reason-or-empty" minOccurs="0"/>
+			<xs:element name="cad-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="dm-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="dm-confirmed" type="tns:dm-confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="dm-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="dm-hba1c-test" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="dm-hba1c-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="dm-hba1c-value" type="tns:decimal-25-or-empty" minOccurs="0"/>
+			<xs:element name="dm-eye-exam" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="dm-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="hf-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="hf-confirmed" type="tns:confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="hf-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="hf-lvsd" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="hf-beta-blocker" type="tns:presc-reason-or-empty" minOccurs="0"/>
+			<xs:element name="hf-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="htn-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="htn-confirmed" type="tns:denominator-confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="htn-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="htn-recent-bp" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="htn-bp-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="htn-bp-systolic" type="tns:str-num-350-or-empty" minOccurs="0"/>
+			<xs:element name="htn-bp-diastolic" type="tns:str-num-200-or-empty" minOccurs="0"/>
+			<xs:element name="htn-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="ivd-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="ivd-confirmed" type="tns:dm-confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="ivd-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="ivd-antithrombotic" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="ivd-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="mh-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="mh-confirmed" type="tns:mh-denom-confirmed-or-empty" minOccurs="0"/>
+			<xs:element name="mh-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="mh-index-performed" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="mh-index-test" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="mh-index-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="mh-index-score" type="tns:num-10-27-or-empty" minOccurs="0"/>
+			<xs:element name="mh-followup-performed" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="mh-followup-test" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="mh-followup-date" type="xs:string" minOccurs="0"/>
+			<xs:element name="mh-followup-score" type="tns:num-0-4-or-empty" minOccurs="0"/>
+			<xs:element name="mh-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcmammogram-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcmammogram-confirmed" type="tns:prev5-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcmammogram-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcmammogram" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcmammogram-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pccolorectal-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pccolorectal-confirmed" type="tns:prev-den-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pccolorectal-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pccolorectal" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pccolorectal-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcflushot-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcflushot-confirmed" type="tns:prev-other-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcflushot-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcflushot" type="tns:presc-reason-or-empty" minOccurs="0"/>
+			<xs:element name="pcflushot-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcpneumoshot-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcpneumoshot-confirmed" type="tns:prev-other-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcpneumoshot-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcpneumoshot" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcpneumoshot-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcbmiscreen-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcbmiscreen-confirmed" type="tns:prev-den-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcbmiscreen-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcbmicalculated" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcbminormal" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcbmiplan" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcbmi-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pctobaccouse-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pctobaccouse-confirmed" type="tns:prev-other-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pctobaccouse-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pctobaccoscreen" type="tns:prev-screen-or-empty" minOccurs="0"/>
+			<xs:element name="pctobaccocounsel" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pctobaccouse-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcbloodpressure-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcbloodpressure-confirmed" type="tns:prev-den-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcbloodpressure-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcbloodpressure" type="tns:performed-or-empty" minOccurs="0"/>
+			<xs:element name="pcbpnormal" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcbpfollowup" type="tns:followpup-or-empty" minOccurs="0"/>
+			<xs:element name="pcbp-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcdepression-confirmed" type="tns:prev-den-not-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression" type="tns:performed-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression-positive" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression-plan" type="tns:yes-no-or-empty" minOccurs="0"/>
+			<xs:element name="pcdepression-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-rank" type="xs:string" minOccurs="0"/>
+			<xs:element name="pcstatin-ascvd" type="tns:ascvd-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-ldlc" type="tns:pc13-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-diabetes" type="tns:pc13-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-ldlc-reading" type="tns:ldlc-qualif-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-rm-ticket" type="tns:string-15char-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-prescribed" type="tns:exam-or-empty" minOccurs="0"/>
+			<xs:element name="pcstatin-comments" type="tns:string-140char-or-empty" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
