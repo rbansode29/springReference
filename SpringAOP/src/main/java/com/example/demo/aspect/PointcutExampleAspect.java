@@ -1,6 +1,5 @@
 package com.example.demo.aspect;
 
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /*
@@ -16,7 +15,7 @@ import org.aspectj.lang.annotation.Pointcut;
  * @annotation - limits matching to join points where the subject of the join point (method being executed in Spring AOP) has the given annotation
  */
 
-@Aspect
+//@Aspect
 public class PointcutExampleAspect {
 
 	public PointcutExampleAspect() {

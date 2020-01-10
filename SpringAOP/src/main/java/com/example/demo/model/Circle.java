@@ -16,8 +16,9 @@ public class Circle {
 		return name;
 	}
 
-	public void passIntegrArgument(Integer p_param) {
-		System.out.println(p_param + "passed to method");
+	public Integer passIntegrArgument(Integer p_param) {
+		System.out.println(p_param + " passed to method");
+		return p_param;
 	}
 
 }

@@ -1,10 +1,21 @@
 package com.example.demo.aspect;
 
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 
-@Aspect
+/*
+ Using before advice, you can perform custom processing
+before a joinpoint executes. Because a joinpoint in Spring
+is always a method invocation, this essentially allows you
+to perform preprocessing before the method executes.
+Before advice has full access to the target of the method
+invocation as well as the arguments passed to the method,
+but it has no control over the execution of the method itself.
+If the before advice throws an exception, further execution
+of the interceptor chain (as well as the target method) will
+be aborted, and the exception will propagate back up the
+interceptor chain.
+ */
+//@Aspect
 public class BeforeAdviceExample {
 
 	public BeforeAdviceExample() {
@@ -23,6 +34,14 @@ public class BeforeAdviceExample {
 	 * @Before :: Standard AOP terminology advises get executed before the specified
 	 * method execution
 	 */
+	
+	@Before("execution(public String getName())")
+	public void loggingAdviceException() {
+		System.out.println("Before advice run. get method call");
+		throw new RuntimeException();
+	}
+	
+	/*
 	@Before("execution(public String getName())")
 	public void loggingAdvice() {
 		System.out.println("Before advice run. get method call");
@@ -52,6 +71,6 @@ public class BeforeAdviceExample {
 
 	@Pointcut("args(a)")
 	private void integerArgumentAdvice(Integer a) {
-	}
+	}*/
 
 }

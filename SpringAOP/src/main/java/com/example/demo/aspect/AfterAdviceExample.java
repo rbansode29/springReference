@@ -2,9 +2,8 @@ package com.example.demo.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
 
-@Aspect
+//@Aspect
 public class AfterAdviceExample {
 
 	public AfterAdviceExample() {

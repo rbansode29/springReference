@@ -17,6 +17,7 @@ public class LoggerAspect {
 	@Before("execution(public String getName())")
 	public void loggingAdvice() {
 		System.out.println("Logger advice run. get method call");
+		throw new RuntimeException();
 	}
 
 }
