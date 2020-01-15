@@ -1,11 +1,13 @@
 package com.example.demo.app.ws.ui.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.app.ws.service.userservice.UserService;
+import com.example.demo.app.ws.ui.controller.exception.UserServiceException;
 import com.example.demo.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.example.demo.app.ws.ui.model.response.UserRest;
 
@@ -25,108 +29,61 @@ import com.example.demo.app.ws.ui.model.response.UserRest;
 @RequestMapping("/users") // http:localhost:8080/users/....
 public class UserRestController {
 
-	private Map<String, UserRest> users = new HashMap<String, UserRest>();
+	private UserService userService;
 
 	public UserRestController() {
 		super();
 	}
 
-	// EXAMPLE URL : http:localhost:8080/users/111
-	/*
-	 * @GetMapping(path = "/{userId}", produces = {
-	 * MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }) public
-	 * UserRest getUser(@PathVariable String userId) { UserRest userRest = new
-	 * UserRest(); userRest.setFirstName("Ravindra");
-	 * userRest.setLastName("Bansode"); userRest.setUserId(userId);
-	 * userRest.setEmail("ravindra29989@gmail.com"); return userRest; }
-	 */
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 
-	// EXAMPLE URL :http://localhost:8080/users?page=1&limit=50
-	/*
-	 * @GetMapping() public String getUserWithMultipalOption(
-	 * 
-	 * @RequestParam(value = "page", required = true, defaultValue = "1") Integer
-	 * p_page,
-	 * 
-	 * @RequestParam(value = "limit", required = true, defaultValue = "51") Integer
-	 * p_limit) { return "get User was called with page= " + p_page + " and Limit ="
-	 * + p_limit; }
-	 */
-
-	/*
-	 * @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
-	 * MediaType.APPLICATION_XML_VALUE }, produces = {
-	 * MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }) public
-	 * ResponseEntity<UserRest> createUser(@RequestBody UserDetailsRequestModel
-	 * userModel) { UserRest userRest = new UserRest();
-	 * userRest.setFirstName(userModel.getFirstname());
-	 * userRest.setLastName(userModel.getLastname());
-	 * userRest.setEmail(userModel.getEmail()); return new
-	 * ResponseEntity<UserRest>(userRest, HttpStatus.OK); }
-	 */
-
-	/*
-	 * @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,
-	 * MediaType.APPLICATION_XML_VALUE }, produces = {
-	 * MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }) public
-	 * ResponseEntity<UserRest> createUserWithValidation(@Valid @RequestBody
-	 * UserDetailsRequestModel userModel) { UserRest userRest = new UserRest();
-	 * userRest.setFirstName(userModel.getFirstname());
-	 * userRest.setLastName(userModel.getLastname());
-	 * userRest.setEmail(userModel.getEmail()); return new
-	 * ResponseEntity<UserRest>(userRest, HttpStatus.OK); }
-	 */
-
-	/*
-	 * @GetMapping(path = "/{userId}", produces = {
-	 * MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }) public
-	 * ResponseEntity<UserRest> getUserWithResponseEntity(@PathVariable String
-	 * userId) {
-	 * 
-	 * UserRest userRest = new UserRest(); userRest.setFirstName("Ravindra");
-	 * userRest.setLastName("Bansode"); userRest.setUserId(userId);
-	 * userRest.setEmail("ravindra29989@gmail.com"); return new
-	 * ResponseEntity<UserRest>(userRest, HttpStatus.OK); // return new
-	 * ResponseEntity<UserRest>(users.get(userId), HttpStatus.OK); }
-	 */
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<List<UserRest>> getAllUsers() {
+		List<UserRest> users = userService.getAllUser();
+		if (users != null) {
+			return new ResponseEntity<List<UserRest>>(users, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<UserRest>>(HttpStatus.NO_CONTENT);
+		}
+	}
 
 	@GetMapping(path = "/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<UserRest> getUserFromTempStore(@PathVariable String userId) {
-		if (users.containsKey(userId)) {
-			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+	public ResponseEntity<UserRest> getSpecificUser(@PathVariable String userId) {
+		exceptionHandelExample(userId);
+		UserRest user = userService.getSpecificUser(userId);
+		if (user != null) {
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<UserRest>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+	private void exceptionHandelExample(String userId) {
+		if (null == userId) {
+			throw new UserServiceException("User Service exception is thrown");
 		}
 	}
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<UserRest> createUserWithTempStore(@Valid @RequestBody UserDetailsRequestModel userModel) {
-		UserRest userRest = new UserRest();
-		userRest.setFirstName(userModel.getFirstname());
-		userRest.setLastName(userModel.getLastname());
-		userRest.setEmail(userModel.getEmail());
-		if (users == null) {
-			users = new HashMap<String, UserRest>();
-		}
-		String userId = UUID.randomUUID().toString();
-		userRest.setUserId(userId);
-		users.put(userId, userRest);
-		return new ResponseEntity<UserRest>(users.get(userId), HttpStatus.OK);
+		return new ResponseEntity<UserRest>(userService.createUser(userModel), HttpStatus.OK);
 	}
 
-	@PutMapping
-	public String updateUser() {
-		return "Update User was called";
+	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<UserRest> updateUser(@PathVariable String userId,
+			@Valid @RequestBody UserDetailsRequestModel userModel) {
+		return new ResponseEntity<UserRest>(userService.updateUser(userId, userModel), HttpStatus.OK);
 	}
 
-	@DeleteMapping
-	public String deleteUser() {
-		return "Delete User was called";
-	}
-
-	// @GetMapping()
-	public String getUserEmpty() {
-		return "get User was called";
+	@DeleteMapping(path = "/{userId}")
+	public ResponseEntity<Object> deleteUser(@PathVariable String userId) {
+		userService.deleteUser(userId);
+		return ResponseEntity.noContent().build();
 	}
 }
